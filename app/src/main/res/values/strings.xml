@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">conversor_medidas</string>
+    <string-array name="units">
+        <item>Kilómetro cuadrado</item>
+        <item>Metro cuadrado</item>
+        <item>Milla cuadrada</item>
+        <item>Yarda cuadrada</item>
+        <item>Pie cuadrado</item>
+        <item>Pulgada cuadrada</item>
+        <item>Hectárea</item>
+        <item>Acre</item>
+    </string-array>
+</resources>
