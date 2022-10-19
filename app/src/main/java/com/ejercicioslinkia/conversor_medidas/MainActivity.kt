@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         fillSpiner(spExit)
 
         //damos funcionalid a los spinners
-        // TODO: dar funcionalidad a los spinners
+
+
 
 
         //damos funcionalidad al boton
@@ -38,12 +39,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * funcion que rellena la informacion de los spinners
+     */
     private fun fillSpiner(spinner:Spinner){
         var sistemUnits : Array<String> = resources.getStringArray(R.array.units)
         var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, sistemUnits)
         spinner.setAdapter(adapter)
     }
 
+    /**
+     * funcion que permite convertir una unidad de medida a otra
+     */
     private fun convertUnits(){
         var entryUnit : String=""
         var exitUnit : String=""
@@ -53,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * función que convierte el double entrado a m2
+     */
     private fun convertUnitToM2(unit:String, value:Double):Double{
         var result: Double = 0.0
         when(unit){
@@ -68,6 +78,9 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+    /**
+     * funcion que pasa de m2 a la unidad seleccionada
+     */
     private fun convertM2toUnit(unit:String,value: Double):Double{
         var result: Double =0.0
         return result
