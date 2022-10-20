@@ -1,8 +1,12 @@
 package com.ejercicioslinkia.conversor_medidas
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,10 +31,23 @@ class MainActivity : AppCompatActivity() {
         fillSpiner(spEntry)
         fillSpiner(spExit)
 
-        //damos funcionalid a los spinners
+        //hacemos que el boton este desactivado hasta que se introduzca un numero
+        btConvert.isEnabled=false
 
+        //damos funcionalidad el editext para controlarlo
+        etNumberEntry.addTextChangedListener(object : TextWatcher {
 
+            override fun afterTextChanged(s: Editable) {}
 
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                btConvert.isEnabled = checkValue(etNumberEntry)
+            }
+        })
 
         //damos funcionalidad al boton
         btConvert.setOnClickListener {
@@ -38,14 +55,18 @@ class MainActivity : AppCompatActivity() {
             var units:String
 
             result=convertUnits(spEntry,spExit,etNumberEntry)
-            units=findUnit(spExit)
-            tvResult.text="Total: ${result.toString()} $units"
+
+            units = findUnit(spExit)
+            tvResult.text = "Total: ${result.toString()} $units"
         }
 
     }
 
+
     /**
      * funcion que rellena la informacion de los spinners
+     *
+     * @param spinner
      */
     private fun fillSpiner(spinner:Spinner){
         var sistemUnits : Array<String> = resources.getStringArray(R.array.units)
@@ -53,21 +74,29 @@ class MainActivity : AppCompatActivity() {
         spinner.setAdapter(adapter)
     }
 
-
-
     /**
      * funcion que permite convertir una unidad de medida a otra
+     *
+     * @param spEntry
+     * @param spExit
+     * @param etEntry
+     * @return Double con el resultado de la conversion
      */
     private fun convertUnits(spEntry:Spinner,spExit:Spinner, etEntry: EditText):Double{
         var exitValue : Double=0.0
         var entryValue:Double=findValue(etEntry)
-        exitValue = convertUnitToM2(spEntry,entryValue)
-        exitValue = convertM2toUnit(spExit,exitValue)
+
+        exitValue = convertUnitToM2(spEntry, entryValue)
+        exitValue = convertM2toUnit(spExit, exitValue)
         return exitValue
     }
 
     /**
-     * función que convierte el double entrado a m2
+     * Funcion que pasa la unidad seleccionada a metros quadrados
+     *
+     * @param spEntry
+     * @param value
+     * @return Double con los metros cuadrados
      */
     private fun convertUnitToM2(spEntry:Spinner, value:Double):Double{
         var entry:String=findUnit(spEntry)
@@ -85,8 +114,13 @@ class MainActivity : AppCompatActivity() {
         return squareMeters
     }
 
+
     /**
-     * funcion que pasa de m2 a la unidad seleccionada
+     * funcion quepasa los metros cuadrados a la unidad elegida
+     *
+     * @param spExit
+     * @param value
+     * @return el valor de los metros cuadros a la unidad seleccionada
      */
     private fun convertM2toUnit(spExit:Spinner,value: Double):Double{
         var exit:String=findUnit(spExit)
@@ -105,7 +139,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * funcion que busca la unidad seleccionada en un spinner
+     * Funcion que busca el texto seleccionado en un spinner al momento de invocarla
+     *
+     * @param spinner
+     * @return String con la seleccion del spinner
      */
     private fun findUnit(spinner: Spinner):String{
         var unit:String
@@ -113,14 +150,29 @@ class MainActivity : AppCompatActivity() {
         return unit
     }
 
+
     /**
-     * funcion que busca el valor introducido por el usuario
+     * Funcion que busca el valor introducido por el usuario
+     *
+     * @param etEntry
+     * @return DOuble con el importe introducido
      */
     private fun findValue(etEntry:EditText):Double{
-        var value:Double
-        var valueString:String
-        valueString=etEntry.text.toString()
-        value=valueString.toDouble()
+        var value: Double
+        var valueString: String
+        valueString = etEntry.text.toString()
+        value = valueString.toDouble()
         return value
+    }
+
+    /**
+     * funcion que controla que se inserte un valor a un editText
+     *
+     * @param etEntry
+     * @return
+     */
+    private fun checkValue(etEntry: EditText):Boolean{
+        var entrada:String=etEntry.text.toString()
+        return !entrada.isNullOrEmpty()
     }
 }
