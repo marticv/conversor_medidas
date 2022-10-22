@@ -1,12 +1,12 @@
 package com.ejercicioslinkia.conversor_medidas
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.*
-import androidx.core.widget.addTextChangedListener
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         tvResult = findViewById(R.id.tvResult)
 
         //llenamos spinners
-        fillSpiner(spEntry)
-        fillSpiner(spExit)
+        fillSpinner(spEntry)
+        fillSpinner(spExit)
 
         //hacemos que el boton este desactivado hasta que se introduzca un numero
         btConvert.isEnabled=false
@@ -51,15 +51,11 @@ class MainActivity : AppCompatActivity() {
 
         //damos funcionalidad al boton
         btConvert.setOnClickListener {
-            var result:Double=0.0
-            var units:String
-
-            result=convertUnits(spEntry,spExit,etNumberEntry)
-
-            units = findUnit(spExit)
+            val result:Double = convertUnits(spEntry,spExit,etNumberEntry)
+            val units:String = findUnit(spExit)
+            tvResult.visibility= View.VISIBLE
             tvResult.text = "Total: ${result.toString()} $units"
         }
-
     }
 
 
@@ -68,10 +64,10 @@ class MainActivity : AppCompatActivity() {
      *
      * @param spinner
      */
-    private fun fillSpiner(spinner:Spinner){
-        var sistemUnits : Array<String> = resources.getStringArray(R.array.units)
-        var adapter : ArrayAdapter<String> = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, sistemUnits)
-        spinner.setAdapter(adapter)
+    private fun fillSpinner(spinner:Spinner){
+        val systemUnits : Array<String> = resources.getStringArray(R.array.units)
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, systemUnits)
+        spinner.adapter = adapter
     }
 
     /**
@@ -83,8 +79,8 @@ class MainActivity : AppCompatActivity() {
      * @return Double con el resultado de la conversion
      */
     private fun convertUnits(spEntry:Spinner,spExit:Spinner, etEntry: EditText):Double{
-        var exitValue : Double=0.0
-        var entryValue:Double=findValue(etEntry)
+        var exitValue:Double
+        val entryValue:Double=findValue(etEntry)
 
         exitValue = convertUnitToM2(spEntry, entryValue)
         exitValue = convertM2toUnit(spExit, exitValue)
@@ -99,8 +95,8 @@ class MainActivity : AppCompatActivity() {
      * @return Double con los metros cuadrados
      */
     private fun convertUnitToM2(spEntry:Spinner, value:Double):Double{
-        var entry:String=findUnit(spEntry)
-        var squareMeters: Double = 0.0
+        val entry:String=findUnit(spEntry)
+        var squareMeters=0.0
         when(entry){
             "Kilómetro cuadrado"->squareMeters=value*1000000
             "Metro cuadrado"->squareMeters=value
@@ -123,7 +119,7 @@ class MainActivity : AppCompatActivity() {
      * @return el valor de los metros cuadros a la unidad seleccionada
      */
     private fun convertM2toUnit(spExit:Spinner,value: Double):Double{
-        var exit:String=findUnit(spExit)
+        val exit:String=findUnit(spExit)
         var result: Double = 0.0
         when(exit){
             "Kilómetro cuadrado"->result=value/1000000
@@ -144,10 +140,8 @@ class MainActivity : AppCompatActivity() {
      * @param spinner
      * @return String con la seleccion del spinner
      */
-    private fun findUnit(spinner: Spinner):String{
-        var unit:String
-        unit=spinner.selectedItem.toString()
-        return unit
+    private fun findUnit(spinner: Spinner): String {
+        return spinner.selectedItem.toString()
     }
 
 
@@ -157,12 +151,9 @@ class MainActivity : AppCompatActivity() {
      * @param etEntry
      * @return DOuble con el importe introducido
      */
-    private fun findValue(etEntry:EditText):Double{
-        var value: Double
-        var valueString: String
-        valueString = etEntry.text.toString()
-        value = valueString.toDouble()
-        return value
+    private fun findValue(etEntry: EditText): Double {
+        val valueString: String = etEntry.text.toString()
+        return valueString.toDouble()
     }
 
     /**
@@ -172,7 +163,12 @@ class MainActivity : AppCompatActivity() {
      * @return
      */
     private fun checkValue(etEntry: EditText):Boolean{
-        var entrada:String=etEntry.text.toString()
-        return !entrada.isNullOrEmpty()
+        val entryText:String=etEntry.text.toString()
+        val entryNumber:Double = entryText.toDouble()
+        if(entryNumber>=0) {
+            return !entryText.isNullOrEmpty()
+        }else{
+            return false
+        }
     }
 }
