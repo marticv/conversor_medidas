@@ -4,68 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_propio"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tvTittle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:text="Conversor de Medidas"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.077" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etNumberEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
-        android:inputType="numberDecimal"
         android:hint="Valor a convertir"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTittle" />
 
+    <TextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:text="De:"
+        app:layout_constraintEnd_toStartOf="@+id/spEntry"
+        app:layout_constraintTop_toTopOf="@+id/spEntry" />
+
     <Spinner
         android:id="@+id/spEntry"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        style="@style/spinner_s"
+        android:layout_width="238dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNumberEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/etNumberEntry"
+        app:layout_constraintVertical_bias="0.018" />
 
     <TextView
         android:id="@+id/tvTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:text="Convertir a:"
-        app:layout_constraintEnd_toEndOf="@+id/spEntry"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/spEntry"
-        app:layout_constraintTop_toBottomOf="@+id/spEntry" />
+        app:layout_constraintStart_toStartOf="@+id/tvFrom"
+        app:layout_constraintTop_toTopOf="@+id/spExit" />
 
     <Spinner
         android:id="@+id/spExit"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
+        style="@style/spinner_s"
+        android:layout_width="238dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/spEntry"
-        app:layout_constraintTop_toBottomOf="@+id/tvTo" />
+        app:layout_constraintHorizontal_bias="0.583"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNumberEntry"
+        app:layout_constraintVertical_bias="0.20" />
 
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="48dp"
+        android:textSize="20dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -76,10 +90,9 @@
         android:id="@+id/btConvert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="48dp"
         android:text="Convertir"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spExit" />
 
