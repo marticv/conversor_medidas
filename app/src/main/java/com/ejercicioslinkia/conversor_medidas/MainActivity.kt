@@ -1,11 +1,15 @@
 package com.ejercicioslinkia.conversor_medidas
 
+import android.icu.number.Notation
+import android.icu.number.ScientificNotation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * Proyecto para M8. App para convertir el valor de medidas de superficie
@@ -55,15 +59,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        //damos funcionalidad al boton
+        //damos funcionalidad al boton cuando se haga click
         btConvert.setOnClickListener {
             //convertimos las unidades
-            val result:Double = convertUnits(spEntry,spExit,etNumberEntry)
+            val result:Double=findResult(spEntry,spExit,etNumberEntry)
+            val convertedResult=changeResultTo2Decimals(result,spEntry,spExit)
             val units:String = findUnit(spExit)
 
             //creamos el texto con el resultado y lo hacemos visible
             tvResult.visibility= View.VISIBLE
-            tvResult.text = "Total: ${result.toString()} $units"
+            tvResult.text = "Total: $convertedResult $units"
         }
     }
 
@@ -80,66 +85,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * funcion que permite convertir una unidad de medida a otra
+     * Funcion que obtiene el resultado de la converions de la unidades entradas
      *
      * @param spEntry
      * @param spExit
      * @param etEntry
-     * @return Double con el resultado de la conversion
+     * @return double con el valor ya convertido segun las unidades entradas
      */
-    private fun convertUnits(spEntry:Spinner,spExit:Spinner, etEntry: EditText):Double{
-        var exitValue:Double
-        val entryValue:Double=findValue(etEntry)
+    private fun findResult(spEntry: Spinner, spExit: Spinner, etEntry: EditText): Double {
+        //obtenemos la posicion de las unidades de entrada y salida
+        val entryUnit: Int = spEntry.selectedItemPosition
+        val exitUnit: Int = spExit.selectedItemPosition
 
-        exitValue = convertUnitToM2(spEntry, entryValue)
-        exitValue = convertM2toUnit(spExit, exitValue)
-        return exitValue
+        //obtenemos el valor del editext que entra el usuario
+        val entryValue: Double = findValue(etEntry)
+
+        //creamos un array con las conversiones de cada unidad de superficie a metros cuadrados
+        val systemConversions: Array<Double> =
+            arrayOf(1000000.0, 1.0, 2590000.0, 1.196, 10.764, 1500.0, 10000.0, 4047.0)
+
+        //hacemos un factor de conversion para obtener el resultado en las unidades deseadas
+        return (systemConversions[entryUnit] / systemConversions[exitUnit]) * entryValue
     }
 
     /**
-     * Funcion que pasa la unidad seleccionada a metros quadrados
+     * funcion que redondea el resultado a 2 decimales
      *
+     * @param entry
      * @param spEntry
-     * @param value
-     * @return Double con los metros cuadrados
-     */
-    private fun convertUnitToM2(spEntry:Spinner, value:Double):Double{
-        val entry:String=findUnit(spEntry)
-        var squareMeters=0.0
-        when(entry){
-            "Kilómetro cuadrado"->squareMeters=value*1000000
-            "Metro cuadrado"->squareMeters=value
-            "Milla cuadrada"->squareMeters=value*2590000
-            "Yarda cuadrada"->squareMeters=value/1.196
-            "Pie cuadrado"->squareMeters=value/10.764
-            "Pulgada cuadrada"->squareMeters=value/1500
-            "Hectárea"->squareMeters=value*10000
-            "Acre"->squareMeters=value*4047
-        }
-        return squareMeters
-    }
-
-    /**
-     * funcion quepasa los metros cuadrados a la unidad elegida
-     *
      * @param spExit
-     * @param value
-     * @return el valor de los metros cuadros a la unidad seleccionada
+     * @return string con el resultado redondeado
      */
-    private fun convertM2toUnit(spExit:Spinner,value: Double):Double{
-        val exit:String=findUnit(spExit)
-        var result: Double = 0.0
-        when(exit){
-            "Kilómetro cuadrado"->result=value/1000000
-            "Metro cuadrado"->result=value
-            "Milla cuadrada"->result=value/2590000
-            "Yarda cuadrada"->result=value*1.196
-            "Pie cuadrado"->result=value*10.764
-            "Pulgada cuadrada"->result=value*1500
-            "Hectárea"->result=value/10000
-            "Acre"->result=value/4047
+    private fun changeResultTo2Decimals(entry:Double, spEntry: Spinner, spExit: Spinner):String{
+        //si las 2 unidades son iguales no modificamos el numero resultado
+        if(spEntry.selectedItemPosition==spExit.selectedItemPosition) {
+            return entry.toString()
+        //si el reusltado es mas grande que 0.01 redondeamos a 2 decimales
+        }else if(entry>0.01) {
+            val decimal: BigDecimal = BigDecimal(entry).setScale(2, RoundingMode.HALF_EVEN)
+            return decimal.toString()
+        }else{
+        //en caso contrario el sistema ya actua con notacion exponencial
+            return entry.toString()
         }
-        return result
     }
 
     /**
@@ -171,13 +159,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun checkValue(etEntry: EditText):Boolean{
         val entryText:String=etEntry.text.toString()
-        val entryNumber:Double = entryText.toDouble()
+        val entryNumber = entryText.toDouble()
 
         //comprobamos se entre un numero y que sea posistivo
-        if(entryNumber>=0) {
-            return !entryText.isNullOrEmpty()
+        return if(entryNumber>=0) {
+            entryText.isNotEmpty()
         }else{
-            return false
+            false
         }
     }
 }
