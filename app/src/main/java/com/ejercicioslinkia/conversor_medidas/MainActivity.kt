@@ -7,7 +7,12 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 
-
+/**
+ * Proyecto para M8. App para convertir el valor de medidas de superficie
+ *
+ * @author Martí Curto Vendrell
+ *
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var spEntry :Spinner
@@ -45,19 +50,22 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
+                //si al cambiar el texto esta vacio, deshabilitamos el boton para evitar errores
                 btConvert.isEnabled = checkValue(etNumberEntry)
             }
         })
 
         //damos funcionalidad al boton
         btConvert.setOnClickListener {
+            //convertimos las unidades
             val result:Double = convertUnits(spEntry,spExit,etNumberEntry)
             val units:String = findUnit(spExit)
+
+            //creamos el texto con el resultado y lo hacemos visible
             tvResult.visibility= View.VISIBLE
             tvResult.text = "Total: ${result.toString()} $units"
         }
     }
-
 
     /**
      * funcion que rellena la informacion de los spinners
@@ -65,6 +73,7 @@ class MainActivity : AppCompatActivity() {
      * @param spinner
      */
     private fun fillSpinner(spinner:Spinner){
+        //obtenemos valores de Values/Strings y los pasamos a un adaptador que los envia al spinner
         val systemUnits : Array<String> = resources.getStringArray(R.array.units)
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, systemUnits)
         spinner.adapter = adapter
@@ -110,7 +119,6 @@ class MainActivity : AppCompatActivity() {
         return squareMeters
     }
 
-
     /**
      * funcion quepasa los metros cuadrados a la unidad elegida
      *
@@ -144,7 +152,6 @@ class MainActivity : AppCompatActivity() {
         return spinner.selectedItem.toString()
     }
 
-
     /**
      * Funcion que busca el valor introducido por el usuario
      *
@@ -165,6 +172,8 @@ class MainActivity : AppCompatActivity() {
     private fun checkValue(etEntry: EditText):Boolean{
         val entryText:String=etEntry.text.toString()
         val entryNumber:Double = entryText.toDouble()
+
+        //comprobamos se entre un numero y que sea posistivo
         if(entryNumber>=0) {
             return !entryText.isNullOrEmpty()
         }else{
