@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_propio"
+    android:background="@color/myBackground"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,6 +14,7 @@
         android:layout_marginTop="36dp"
         android:text="Conversor de Medidas"
         android:textSize="20dp"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:ems="10"
+        android:textColorHint="@color/hintColor"
         android:hint="Valor a convertir"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
         android:text="De:"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toStartOf="@+id/spEntry"
         app:layout_constraintTop_toTopOf="@+id/spEntry" />
 
@@ -58,6 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Convertir a:"
+        android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="@+id/tvFrom"
         app:layout_constraintTop_toTopOf="@+id/spExit" />
 
@@ -80,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:textSize="20dp"
+        android:textColor="@color/textColor"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

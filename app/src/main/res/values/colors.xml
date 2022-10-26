@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
-    <color name="color_propio">#8ae0db</color>
+    <color name="myBackground">#BE95C4</color>
+    <color name="spinnerBackground">#E0B1CB</color>
+    <color name="hintColor">#9F86C0</color>
+    <color name="textColor">#231942</color>
 </resources>
